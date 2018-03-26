@@ -1,0 +1,55 @@
+# depslib dependency file v1.0
+1521960388 source:e:\my_socket\tcpser\class.cpp
+	<process.h>
+	<stdio.h>
+	"Class.h"
+	"TcpSer.h"
+
+1521960388 e:\my_socket\tcpser\class.h
+	<windows.h>
+	<iostream>
+
+1521964222 e:\my_socket\tcpser\tcpser.h
+	<iostream>
+	<windows.h>
+	<winbase.h>
+	<vector>
+	<map>
+	<string>
+	<process.h>
+	"Class.h"
+
+1521964239 source:e:\my_socket\tcpser\main.cpp
+	"TcpSer.h"
+
+1521958754 source:e:\my_socket\tcpser\tcpser.cpp
+	"TcpSer.h"
+	"Class.h"
+
+1522057769 source:f:\socket编程\tcpser\main.cpp
+	"TcpSer.h"
+
+1522057411 f:\socket编程\tcpser\tcpser.h
+	<iostream>
+	<windows.h>
+	<winbase.h>
+	<vector>
+	<map>
+	<string>
+	<process.h>
+	"Class.h"
+
+1522057411 f:\socket编程\tcpser\class.h
+	<windows.h>
+	<iostream>
+
+1522057769 source:f:\socket编程\tcpser\class.cpp
+	<process.h>
+	<stdio.h>
+	"Class.h"
+	"TcpSer.h"
+
+1522057411 source:f:\socket编程\tcpser\tcpser.cpp
+	"TcpSer.h"
+	"Class.h"
+

@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1522060245 source:f:\socket±à³Ì\tcpcli\main.cpp
+	<iostream>
+	"TcpCli.h"
+
+1522060245 f:\socket±à³Ì\tcpcli\tcpcli.h
+	<iostream>
+	<windows.h>
+	<process.h>
+
+1522060245 source:f:\socket±à³Ì\tcpcli\tcpcli.cpp
+	"TcpCli.h"
+
