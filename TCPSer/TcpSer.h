@@ -2,53 +2,51 @@
 #define TCPSER_H_INCLUDED
 #include <iostream>
 #include <windows.h>
-#include <winbase.h>
 #include <vector>
-#include <map>
 #include <string>
 #include <process.h>
 #include "Class.h"
 
 using namespace std;
-#pragma comment(lib, "ws2_32.lib")			//¶¯Ì¬¿âº¯Êı
+#pragma comment(lib, "ws2_32.lib")			//åŠ¨æ€åº“å‡½æ•°
 
-#define SERVERIP "127.0.0.1"//·şÎñÆ÷TCPµÄIPµØÖ·
-#define SERVERPORT 6666		 //·şÎñÆ÷TCP¶Ë¿Ú
-#define CONN_NUM 10              //Á¬½Ó¿Í»§¶ËÊıÁ¿
+#define SERVERIP "127.0.0.1"//æœåŠ¡å™¨TCPçš„IPåœ°å€
+#define SERVERPORT 6666		 //æœåŠ¡å™¨TCPç«¯å£
+#define CONN_NUM 10              //è¿æ¥å®¢æˆ·ç«¯æ•°é‡
 
-#define TIMEFOR_THREAD_HELP			1500	//ÇåÀí×ÊÔ´Ïß³ÌÍË³öÊ±¼ä
-#define TIMEFOR_THREAD_EXIT			5000	//Ö÷Ïß³ÌË¯ÃßÊ±¼ä
+#define TIMEFOR_THREAD_HELP			1500	//æ¸…ç†èµ„æºçº¿ç¨‹é€€å‡ºæ—¶é—´
+#define TIMEFOR_THREAD_EXIT			5000	//ä¸»çº¿ç¨‹ç¡çœ æ—¶é—´
 
-typedef vector<CClient*> ClIENTVECTOR;		//ÏòÁ¿ÈİÆ÷
-typedef vector<string> SVECTOR;             //ÄÚÈİ×Ö·û
+typedef vector<CClient*> ClIENTVECTOR;		//å‘é‡å®¹å™¨
+typedef vector<string> SVECTOR;             //å†…å®¹å­—ç¬¦
 
-
-/**
- * È«¾Ö±äÁ¿
- */
-extern char	dataBuf[MAX_NUM_BUF];				//Ğ´»º³åÇø
-extern bool	bConning;							//Óë¿Í»§¶ËµÄÁ¬½Ó×´Ì¬
-extern bool bSend;                              //·¢ËÍ±ê¼ÇÎ»
-extern bool clientConn;                         //Á¬½Ó¿Í»§¶Ë±ê¼Ç
-extern SOCKET sServer;							//·şÎñÆ÷¼àÌıÌ×½Ó×Ö
-extern HANDLE AccHandle;						//Êı¾İ´¦ÀíÏß³Ì¾ä±ú
-extern HANDLE CleanHandle;						//Êı¾İ½ÓÊÕÏß³Ì
 
 /**
- *º¯ÊıÉêÃ÷
+ * å…¨å±€å˜é‡
  */
-bool initSever(void);                       //³õÊ¼»¯
+extern char	dataBuf[MAX_NUM_BUF];				//å†™ç¼“å†²åŒº
+extern bool	bConning;							//ä¸å®¢æˆ·ç«¯çš„è¿æ¥çŠ¶æ€
+extern bool bSend;                              //å‘é€æ ‡è®°ä½
+extern bool clientConn;                         //è¿æ¥å®¢æˆ·ç«¯æ ‡è®°
+extern SOCKET sServer;							//æœåŠ¡å™¨ç›‘å¬å¥—æ¥å­—
+extern HANDLE AccHandle;						//æ•°æ®å¤„ç†çº¿ç¨‹å¥æŸ„
+extern HANDLE CleanHandle;						//æ•°æ®æ¥æ”¶çº¿ç¨‹
+
+/**
+ *å‡½æ•°ç”³æ˜
+ */
+bool initSever(void);                       //åˆå§‹åŒ–
 void InitGlobal(void);
-bool initSocket(void);						//³õÊ¼»¯·Ç×èÈûÌ×½Ó×Ö
-void exitServer(void);						//ÊÍ·Å×ÊÔ´
-bool startService(void);					//Æô¶¯·şÎñÆ÷
-void inputAndOutput(void);                  //´¦ÀíÊı¾İ
-void showServerStartMsg(bool bSuc);         //ÏÔÊ¾´íÎóĞÅÏ¢
-void showServerExitMsg(void);               //ÏÔÊ¾ÍË³öÏûÏ¢
-void handleData(char* str);                 //Êı¾İ´¦Àí
-void showTipMsg(int bFirstInput);          //ÏÔÊ¾ÊäÈëÌáÊ¾ĞÅÏ¢
-bool createCleanAndAcceptThread(void);      //¿ªÆô¼à¿Øº¯Êı
-DWORD __stdcall acceptThread(void* pParam); //¿ªÆô¿Í»§¶ËÇëÇóÏß³Ì
+bool initSocket(void);						//åˆå§‹åŒ–éé˜»å¡å¥—æ¥å­—
+void exitServer(void);						//é‡Šæ”¾èµ„æº
+bool startService(void);					//å¯åŠ¨æœåŠ¡å™¨
+void inputAndOutput(void);                  //å¤„ç†æ•°æ®
+void showServerStartMsg(bool bSuc);         //æ˜¾ç¤ºé”™è¯¯ä¿¡æ¯
+void showServerExitMsg(void);               //æ˜¾ç¤ºé€€å‡ºæ¶ˆæ¯
+void handleData(char* str);                 //æ•°æ®å¤„ç†
+void showTipMsg(int bFirstInput);          //æ˜¾ç¤ºè¾“å…¥æç¤ºä¿¡æ¯
+bool createCleanAndAcceptThread(void);      //å¼€å¯ç›‘æ§å‡½æ•°
+DWORD __stdcall acceptThread(void* pParam); //å¼€å¯å®¢æˆ·ç«¯è¯·æ±‚çº¿ç¨‹
 DWORD __stdcall cleanThread(void* pParam);
 
 #endif // TCPSER_H_INCLUDED
