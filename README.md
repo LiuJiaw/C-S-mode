@@ -1,5 +1,5 @@
 # C-S-mode
-简单的Client/Server模型
+简单的Client/Server模型，使用tcp协议
  
 
 能够实现多个客户端同时与服务器进行通信，服务器端能够向所有客户端广播数据。
