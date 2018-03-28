@@ -29,21 +29,19 @@
 1522057769 source:f:\socket编程\tcpser\main.cpp
 	"TcpSer.h"
 
-1522057411 f:\socket编程\tcpser\tcpser.h
+1522219712 f:\socket编程\tcpser\tcpser.h
 	<iostream>
 	<windows.h>
-	<winbase.h>
 	<vector>
-	<map>
 	<string>
 	<process.h>
 	"Class.h"
 
-1522057411 f:\socket编程\tcpser\class.h
+1522219712 f:\socket编程\tcpser\class.h
 	<windows.h>
 	<iostream>
 
-1522057769 source:f:\socket编程\tcpser\class.cpp
+1522219035 source:f:\socket编程\tcpser\class.cpp
 	<process.h>
 	<stdio.h>
 	"Class.h"

@@ -5,7 +5,7 @@
 
 
 //构造函数
-CClient::CClient(const SOCKET sClient, const sockaddr_in &addrClient)
+SClient::SClient(const SOCKET sClient, const sockaddr_in &addrClient)
 {
 	//初始化变量
 	m_RecvHandle=NULL;
@@ -16,14 +16,14 @@ CClient::CClient(const SOCKET sClient, const sockaddr_in &addrClient)
 	memset(BufSend, 0, MAX_NUM_BUF);
 }
 //析构函数
-CClient::~CClient()
+SClient::~SClient()
 {
 	closesocket(m_socket);			//关闭套接字
 	m_socket=INVALID_SOCKET;		//套接字无效
 }
 
 //创建发送和接收数据线程
-bool CClient::StartRuning(void)
+bool SClient::StartRuning(void)
 {
 	m_bConning=true;//设置连接状态
 
@@ -55,9 +55,9 @@ bool CClient::StartRuning(void)
 
 
 //接收客户端数据
-DWORD  CClient::RecvThread(void* pParam)
+DWORD  SClient::RecvThread(void* pParam)
 {
-	CClient *pClient=(CClient*)pParam;	//客户端对象指针
+	SClient *pClient=(SClient*)pParam;	//客户端对象指针
 	int		reVal;							//返回值
 	char	temp[MAX_NUM_BUF];				//临时变量
 
@@ -102,9 +102,9 @@ DWORD  CClient::RecvThread(void* pParam)
 }
 
 //向客户端发送数据
-DWORD CClient::SendThread(void* pParam)
+DWORD SClient::SendThread(void* pParam)
 {
-	CClient *pClient = (CClient*)pParam;//转换数据类型为CClient指针
+	SClient *pClient = (SClient*)pParam;//转换数据类型为SClient指针
 	while(pClient->m_bConning)//连接状态
 	{
         if(bSend)

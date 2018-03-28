@@ -74,7 +74,7 @@ bool initSocket(void)
 /**
  * 产生清理资源和接受客户端连接线程
  */
-bool createCleanAndAcceptThread(void)
+bool createThread(void)
 {
     bConning = true;//设置服务器为运行状态
 
@@ -135,7 +135,7 @@ DWORD __stdcall acceptThread(void* pParam)
 		else//接受客户端的请求
 		{
 		    clientConn = true;          //已经连接上客户端
-		    CClient *pClient = new CClient(sAccept, addrClient);
+		    SClient *pClient = new SClient(sAccept, addrClient);
             //显示客户端的IP和端口
             char *pClientIP = inet_ntoa(addrClient.sin_addr);
             cout<<"IP: "<<pClientIP<<"\t客户端已连接"<<endl;
@@ -158,7 +158,7 @@ DWORD __stdcall cleanThread(void* pParam)
 		ClIENTVECTOR::iterator iter = clientvector.begin();
 		for (iter; iter != clientvector.end();)
 		{
-			CClient *pClient = (CClient*)*iter;
+			SClient *pClient = (SClient*)*iter;
 			if (!pClient->IsConning())			//客户端线程已经退出
 			{
 			    char *pClientIP=inet_ntoa(pClient->Getm_addr().sin_addr);
@@ -185,7 +185,7 @@ DWORD __stdcall cleanThread(void* pParam)
 		ClIENTVECTOR::iterator iter = clientvector.begin();
 		for (iter; iter != clientvector.end();)
 		{
-			CClient *pClient = (CClient*)*iter;
+			SClient *pClient = (SClient*)*iter;
 			//如果客户端的连接还存在，则断开连接，线程退出
 			if (pClient->IsConning())
 			{
@@ -206,7 +206,7 @@ DWORD __stdcall cleanThread(void* pParam)
 /**
  * 处理数据
  */
- void inputAndOutput(void)
+ void SendBuffer(void)
  {
     char sendBuf[MAX_NUM_BUF];
 
@@ -222,7 +222,7 @@ DWORD __stdcall cleanThread(void* pParam)
 /**
  *  释放资源
  */
-void  exitServer(void)
+void  Exit(void)
 {
 	closesocket(sServer);					//关闭SOCKET
 	WSACleanup();							//卸载Windows Sockets DLL

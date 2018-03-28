@@ -3,31 +3,31 @@
 
 int main()
 {
-    //åˆå§‹åŒ–å…¨å±€å˜é‡
+    //³õÊ¼»¯È«¾Ö±äÁ¿
     InitGlobal();
-    //åˆå§‹åŒ–å¥—æ¥å­—
-    if (!initSocket())
-    {
-	exitServer();
+	//³õÊ¼»¯Ì×½Ó×Ö
+	if (!initSocket())
+	{
+		Exit();
     	return -1;
-    }
+	}
 
-    if(createCleanAndAcceptThread())	//æ¥å—å®¢æˆ·ç«¯è¯·æ±‚çš„çº¿ç¨‹
+	if(createThread())	//½ÓÊÜ¿Í»§¶ËÇëÇóµÄÏß³Ì
     {
-        showServerStartMsg(true);		//åˆ›å»ºçº¿ç¨‹æˆåŠŸä¿¡æ¯
+        showServerStartMsg(true);		//´´½¨Ïß³Ì³É¹¦ĞÅÏ¢
     }
     else
     {
         showServerStartMsg(false);
-	exitServer();
+		Exit();
     	return -1;
     }
 
-    //å¤„ç†æ•°æ®
-    inputAndOutput();
+	 //´¦ÀíÊı¾İ
+    SendBuffer();
 
-    //é€€å‡ºä¸»çº¿ç¨‹ï¼Œæ¸…ç†èµ„æº
-	exitServer();
+    //ÍË³öÖ÷Ïß³Ì£¬ÇåÀí×ÊÔ´
+	Exit();
 
 	return 0;
 }

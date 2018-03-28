@@ -8,34 +8,34 @@
 #include "Class.h"
 
 using namespace std;
-#pragma comment(lib, "ws2_32.lib")			//åŠ¨æ€åº“å‡½æ•°
+#pragma comment(lib, "ws2_32.lib")			//¶¯Ì¬¿âº¯Êı
 
-#define SERVERIP "127.0.0.1"//æœåŠ¡å™¨TCPçš„IPåœ°å€
-#define SERVERPORT 6666		 //æœåŠ¡å™¨TCPç«¯å£
-#define CONN_NUM 10              //è¿æ¥å®¢æˆ·ç«¯æ•°é‡
+#define SERVERIP "127.0.0.1"//·şÎñÆ÷TCPµÄIPµØÖ·
+#define SERVERPORT 6666		 //·şÎñÆ÷TCP¶Ë¿Ú
+#define CONN_NUM 10              //Á¬½Ó¿Í»§¶ËÊıÁ¿
 
-#define TIMEFOR_THREAD_HELP			1500	//æ¸…ç†èµ„æºçº¿ç¨‹é€€å‡ºæ—¶é—´
-#define TIMEFOR_THREAD_EXIT			5000	//ä¸»çº¿ç¨‹ç¡çœ æ—¶é—´
+#define TIMEFOR_THREAD_HELP			1500	//ÇåÀí×ÊÔ´Ïß³ÌÍË³öÊ±¼ä
+#define TIMEFOR_THREAD_EXIT			5000	//Ö÷Ïß³ÌË¯ÃßÊ±¼ä
 
-typedef vector<CClient*> ClIENTVECTOR;		//å‘é‡å®¹å™¨
+typedef vector<SClient*> ClIENTVECTOR;		//ÏòÁ¿ÈİÆ÷
 
-
-extern char	dataBuf[MAX_NUM_BUF];				//å†™ç¼“å†²åŒº
-extern bool bSend;                              //å‘é€æ ‡è®°ä½
-
-
-bool initSever(void);                       //åˆå§‹åŒ–
+//³õÊ¼»¯È«¾Ö±äÁ¿
 void InitGlobal(void);
-bool initSocket(void);						//åˆå§‹åŒ–éé˜»å¡å¥—æ¥å­—
-void exitServer(void);						//é‡Šæ”¾èµ„æº
-bool startService(void);					//å¯åŠ¨æœåŠ¡å™¨
-void inputAndOutput(void);                  //å¤„ç†æ•°æ®
-void showServerStartMsg(bool bSuc);         //æ˜¾ç¤ºé”™è¯¯ä¿¡æ¯
-void showServerExitMsg(void);               //æ˜¾ç¤ºé€€å‡ºæ¶ˆæ¯
-void handleData(char* str);                 //æ•°æ®å¤„ç†
-void showTipMsg(int bFirstInput);          //æ˜¾ç¤ºè¾“å…¥æç¤ºä¿¡æ¯
-bool createCleanAndAcceptThread(void);      //å¼€å¯ç›‘æ§å‡½æ•°
-DWORD __stdcall acceptThread(void* pParam); //å¼€å¯å®¢æˆ·ç«¯è¯·æ±‚çº¿ç¨‹
+//³õÊ¼»¯·Ç×èÈûÌ×½Ó×Ö
+bool initSocket(void);
+//ÍË³ö·şÎñÆ÷
+void Exit(void);
+//»ñÈ¡ÊäÈëĞÅÏ¢
+void SendBuffer(void);
+//ÏÔÊ¾·şÎñÆ÷Æô¶¯ĞÅÏ¢
+void showServerStartMsg(bool bSuc);
+//ÏÔÊ¾ÍË³öÏûÏ¢
+void showServerExitMsg(void);
+//´´½¨Ïß³Ì£¬½øĞĞ¼àÌıºÍÇå³ı²Ù×÷
+bool createThread(void);
+//½ÓÊÜ¿Í»§¶ËÇëÇóÏß³ÌÖ´ĞĞº¯Êı
+DWORD __stdcall acceptThread(void* pParam);
+//ÇåÀíÒÑ¶Ï¿ªÁ¬½Ó¿Í»§¶ËµÄÏß³ÌÖ´ĞĞº¯Êı
 DWORD __stdcall cleanThread(void* pParam);
 
 #endif // TCPSER_H_INCLUDED

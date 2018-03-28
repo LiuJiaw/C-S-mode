@@ -8,16 +8,18 @@ using namespace std;
 //缓冲区的最大长度
 #define	MAX_NUM_BUF	100
 
+//写缓冲区
+extern char	dataBuf[MAX_NUM_BUF];
+//发送标记位
+extern bool bSend;
 
-class CClient
+class SClient
 {
 public:
-	CClient(const SOCKET sClient,const sockaddr_in &addrClient);
-	~CClient();
+	SClient(const SOCKET sClient,const sockaddr_in &addrClient);
+	~SClient();
     //创建发送和接收数据线程
 	bool StartRuning(void);
-	//计算表达式
-	void HandleData(const char* pExpr);
 	//是否连接存在
 	bool IsConning(void)
 	{
