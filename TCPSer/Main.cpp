@@ -3,18 +3,18 @@
 
 int main()
 {
-    //³õÊ¼»¯È«¾Ö±äÁ¿
+    //åˆå§‹åŒ–å…¨å±€å˜é‡
     InitGlobal();
-	//³õÊ¼»¯Ì×½Ó×Ö
-	if (!initSocket())
-	{
-		Exit();
-    	return -1;
-	}
-
-	if(createThread())	//½ÓÊÜ¿Í»§¶ËÇëÇóµÄÏß³Ì
+    //åˆå§‹åŒ–å¥—æ¥å­—
+    if (!initSocket())
     {
-        showServerStartMsg(true);		//´´½¨Ïß³Ì³É¹¦ĞÅÏ¢
+	Exit();
+    	return -1;
+    }
+    //æ¥å—å®¢æˆ·ç«¯è¯·æ±‚çš„çº¿ç¨‹
+    if(createThread())	
+    {
+        showServerStartMsg(true);
     }
     else
     {
@@ -22,12 +22,10 @@ int main()
 		Exit();
     	return -1;
     }
-
-	 //´¦ÀíÊı¾İ
+    //å¤„ç†æ•°æ®
     SendBuffer();
+    //é€€å‡ºä¸»çº¿ç¨‹ï¼Œæ¸…ç†èµ„æº
+    Exit();
 
-    //ÍË³öÖ÷Ïß³Ì£¬ÇåÀí×ÊÔ´
-	Exit();
-
-	return 0;
+    return 0;
 }
