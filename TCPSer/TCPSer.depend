@@ -26,16 +26,16 @@
 	"TcpSer.h"
 	"Class.h"
 
-1522057769 source:f:\socket编程\tcpser\main.cpp
+1522219712 source:f:\socket编程\tcpser\main.cpp
 	"TcpSer.h"
 
-1522219712 f:\socket编程\tcpser\tcpser.h
+1523008645 f:\socket编程\tcpser\tcpser.h
 	<iostream>
 	<windows.h>
 	<vector>
 	<string>
 	<process.h>
-	"Class.h"
+	"SClient.h"
 
 1522219712 f:\socket编程\tcpser\class.h
 	<windows.h>
@@ -47,7 +47,17 @@
 	"Class.h"
 	"TcpSer.h"
 
-1522057411 source:f:\socket编程\tcpser\tcpser.cpp
+1523012444 source:f:\socket编程\tcpser\tcpser.cpp
 	"TcpSer.h"
-	"Class.h"
+	"SClient.h"
+
+1523004163 f:\socket编程\tcpser\sclient.h
+	<windows.h>
+	<iostream>
+
+1523008588 source:f:\socket编程\tcpser\sclient.cpp
+	<process.h>
+	<stdio.h>
+	"SClient.h"
+	"TcpSer.h"
 

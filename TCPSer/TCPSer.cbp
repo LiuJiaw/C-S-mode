@@ -31,9 +31,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Class.cpp" />
-		<Unit filename="Class.h" />
 		<Unit filename="Main.cpp" />
+		<Unit filename="SClient.cpp" />
+		<Unit filename="SClient.h" />
 		<Unit filename="TcpSer.cpp" />
 		<Unit filename="TcpSer.h" />
 		<Extensions>

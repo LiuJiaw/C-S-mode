@@ -1,13 +1,10 @@
 #include "TcpSer.h"
-#include "Class.h"
+#include "SClient.h"
 
 
-/**
- * 全局变量
- */
+//全局变量
 char	dataBuf[MAX_NUM_BUF];				//写缓冲区
 bool	bConning;							//与客户端的连接状态
-bool    bSend;                              //发送标记位
 bool    clientConn;                         //连接客户端标记
 SOCKET	sServer;							//服务器监听套接字
 HANDLE	AccHandle;						//数据处理线程句柄
@@ -15,13 +12,10 @@ HANDLE	CleanHandle;						//数据接收线程
 ClIENTVECTOR clientvector;                  //存储子套接字
 
 
-/**
- * 初始化全局变量
- */
+//初始化全局变量
 void InitGlobal(void)
 {
 	memset(dataBuf, 0, MAX_NUM_BUF);
-	bSend = false;
 	clientConn = false;
 	bConning = false;									    //服务器为没有运行状态
 	AccHandle = NULL;									//设置为NULL
@@ -30,9 +24,7 @@ void InitGlobal(void)
 	clientvector.clear();									//清空向量
 }
 
-/**
- *  初始化SOCKET
- */
+//初始化SOCKET
 bool initSocket(void)
 {
 	//返回值
@@ -71,9 +63,7 @@ bool initSocket(void)
 }
 
 
-/**
- * 产生清理资源和接受客户端连接线程
- */
+//产生清理资源和接受客户端连接线程
 bool createThread(void)
 {
     bConning = true;//设置服务器为运行状态
@@ -105,9 +95,7 @@ bool createThread(void)
 }
 
 
-/**
- * 接受客户端连接
- */
+//接受客户端连接
 DWORD __stdcall acceptThread(void* pParam)
 {
     SOCKET  sAccept;							                        //接受客户端连接的套接字
@@ -147,9 +135,7 @@ DWORD __stdcall acceptThread(void* pParam)
 	return 0;//线程退出
 }
 
-/**
- * 清理资源线程
- */
+//清理资源线程
 DWORD __stdcall cleanThread(void* pParam)
  {
     while (bConning)                  //服务器正在运行
@@ -203,25 +189,40 @@ DWORD __stdcall cleanThread(void* pParam)
 	return 0;
  }
 
-/**
- * 处理数据
- */
+//服务器端发送数据
  void SendBuffer(void)
  {
-    char sendBuf[MAX_NUM_BUF];
-
+    //char sendBuf[MAX_NUM_BUF];
     while(bConning)
     {
-        memset(sendBuf, 0, MAX_NUM_BUF);	//清空发送缓冲区
-        cin.getline(sendBuf,MAX_NUM_BUF);
-        memcpy(dataBuf, sendBuf, MAX_NUM_BUF);
-        bSend = true;
+        memset(dataBuf, 0, MAX_NUM_BUF);
+        cin.getline(dataBuf,MAX_NUM_BUF);
+        ToAllCliBuf(dataBuf, NULL);
     }
  }
 
-/**
- *  释放资源
- */
+ //将要发送的数据传递给各客户端buffer
+ void ToAllCliBuf(char* str, char* addr)
+ {
+    if(addr)
+    {
+        char finalStr[MAX_NUM_BUF+10]="IP:";
+        strcat(finalStr, addr);
+        strcat(finalStr, "\t");
+        strcat(finalStr, str+3);
+        strcpy(str, finalStr);
+    }
+    ClIENTVECTOR::iterator iter = clientvector.begin();
+    while(iter!=clientvector.end())
+    {
+        SClient *pClient = (SClient*)*iter;
+        pClient->SetBufSend(str);
+        pClient->Setm_bSend(true);
+        iter++;
+    }
+ }
+
+//释放资源
 void  Exit(void)
 {
 	closesocket(sServer);					//关闭SOCKET
@@ -229,9 +230,7 @@ void  Exit(void)
 }
 
 
-/**
- * 显示启动服务器成功与失败消息
- */
+//显示启动服务器成功与失败消息
 void  showServerStartMsg(bool bSuc)
 {
 	if (bSuc)
@@ -244,9 +243,7 @@ void  showServerStartMsg(bool bSuc)
 
 }
 
-/**
- * 显示服务器退出消息
- */
+//显示服务器退出消息
 void  showServerExitMsg(void)
 {
 	cout << "服务器退出.." << endl;

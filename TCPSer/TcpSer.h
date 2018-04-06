@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include <process.h>
-#include "Class.h"
+#include "SClient.h"
 
 using namespace std;
 #pragma comment(lib, "ws2_32.lib")			//动态库函数
@@ -27,6 +27,8 @@ bool initSocket(void);
 void Exit(void);
 //获取输入信息
 void SendBuffer(void);
+//传递数据给各客户端
+void ToAllCliBuf(char* str, char* addr);
 //显示服务器启动信息
 void showServerStartMsg(bool bSuc);
 //显示退出消息
