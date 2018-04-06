@@ -1,51 +1,51 @@
 #include "TcpCli.h"
 
-//clientÌ×½Ó×Ö
+//clientå¥—æ¥å­—
 SOCKET sClient;
-//·¢ËÍ±ê¼ÇÎ»
+//å‘é€æ ‡è®°ä½
 bool toSend=false;
-//Óë·şÎñÆ÷µÄÁ¬½Ó×´Ì¬
+//ä¸æœåŠ¡å™¨çš„è¿æ¥çŠ¶æ€
 bool bConnecting;
-//·¢ËÍÊı¾İÏß³Ì
+//å‘é€æ•°æ®çº¿ç¨‹
 HANDLE SendHandle;
-//½ÓÊÕÊı¾İÏß³Ì
+//æ¥æ”¶æ•°æ®çº¿ç¨‹
 HANDLE RecvHandle;
-//·¢ËÍÊı¾İ»º³åÇø
+//å‘é€æ•°æ®ç¼“å†²åŒº
 char bufSend[BUF_SIZE];
 
 
 
 /**
- * ³õÊ¼»¯È«¾Ö±äÁ¿
+ * åˆå§‹åŒ–å…¨å±€å˜é‡
  */
 void InitGlobal(void)
 {
 	sClient = INVALID_SOCKET;
-	//³õÊ¼»¯ÎªÎª¶Ï¿ª×´Ì¬
+	//åˆå§‹åŒ–ä¸ºä¸ºæ–­å¼€çŠ¶æ€
 	bConnecting = false;
-    //³õÊ¼»¯Êı¾İ»º³åÇø
+    //åˆå§‹åŒ–æ•°æ®ç¼“å†²åŒº
 	memset(bufSend, 0, BUF_SIZE);
-	//½ÓÊÕÊı¾İÏß³Ì¾ä±ú
+	//æ¥æ”¶æ•°æ®çº¿ç¨‹å¥æŸ„
 	RecvHandle = NULL;
-	//·¢ËÍÊı¾İÏß³Ì¾ä±ú
+	//å‘é€æ•°æ®çº¿ç¨‹å¥æŸ„
 	SendHandle = NULL;
 }
 
 
 
-//´´½¨·Ç×èÈûÌ×½Ó×Ö
+//åˆ›å»ºéé˜»å¡å¥—æ¥å­—
 bool  InitSocket(void)
 {
-	WSADATA		wsData;	//WSADATA±äÁ¿
-	int reVal = WSAStartup(MAKEWORD(2,2),&wsData);//³õÊ¼»¯Windows Sockets Dll
+	WSADATA		wsData;	//WSADATAå˜é‡
+	int reVal = WSAStartup(MAKEWORD(2,2),&wsData);//åˆå§‹åŒ–Windows Sockets Dll
 
-	//´´½¨Ì×½Ó×Ö
+	//åˆ›å»ºå¥—æ¥å­—
 	sClient = socket(AF_INET, SOCK_STREAM, 0);
 	if(INVALID_SOCKET == sClient)
 		return false;
 
 
-	//ÉèÖÃÌ×½Ó×Ö·Ç×èÈûÄ£Ê½
+	//è®¾ç½®å¥—æ¥å­—éé˜»å¡æ¨¡å¼
 	unsigned long ul = 1;
 	reVal = ioctlsocket(sClient, FIONBIO, (unsigned long*)&ul);
 	if (reVal == SOCKET_ERROR)
@@ -56,45 +56,45 @@ bool  InitSocket(void)
 
 
 
-//Á¬½Ó·şÎñÆ÷
+//è¿æ¥æœåŠ¡å™¨
 bool ConnectServer(void)
 {
-	int reVal;			//·µ»ØÖµ
-	sockaddr_in serAddr;//·şÎñÆ÷µØÖ·
-	//ÊäÈëÒªÁ¬½ÓµÄÖ÷»úµØÖ·
+	int reVal;			//è¿”å›å€¼
+	sockaddr_in serAddr;//æœåŠ¡å™¨åœ°å€
+	//è¾“å…¥è¦è¿æ¥çš„ä¸»æœºåœ°å€
     serAddr.sin_family=AF_INET;
     serAddr.sin_port=htons(SERVERPORT);
     serAddr.sin_addr.S_un.S_addr=inet_addr(SERVERIP);
 
-    //ÉèÖÃ³¢ÊÔ´ÎÊı£¬³¬¹ıÒ»¶¨´ÎÊıÔòÖÃÎªÁ¬½Ó²»³É¹¦×´Ì¬
+    //è®¾ç½®å°è¯•æ¬¡æ•°ï¼Œè¶…è¿‡ä¸€å®šæ¬¡æ•°åˆ™ç½®ä¸ºè¿æ¥ä¸æˆåŠŸçŠ¶æ€
     int try_time=0;
 	while(true)
 	{
-		//Á¬½Ó·şÎñÆ÷
+		//è¿æ¥æœåŠ¡å™¨
 		reVal=connect(sClient, (struct sockaddr*)&serAddr, sizeof(serAddr));
-		//¼ì²âÒÑ³¢ÊÔ´ÎÊı
+		//æ£€æµ‹å·²å°è¯•æ¬¡æ•°
 		if(try_time>LIMIT_FAIL)
             return false;
-		//´¦ÀíÁ¬½Ó´íÎó
+		//å¤„ç†è¿æ¥é”™è¯¯
 		if(reVal==SOCKET_ERROR)
 		{
 			int nErrCode = WSAGetLastError();
-			if( nErrCode==WSAEWOULDBLOCK || nErrCode==WSAEALREADY )    //Á¬½Ó»¹Ã»ÓĞÍê³É
+			if( nErrCode==WSAEWOULDBLOCK || nErrCode==WSAEALREADY )    //è¿æ¥è¿˜æ²¡æœ‰å®Œæˆ
 			{
 			    ++try_time;
 				continue;
 			}
-			else if (nErrCode==WSAEISCONN)//Á¬½ÓÒÑ¾­Íê³É
+			else if (nErrCode==WSAEISCONN)//è¿æ¥å·²ç»å®Œæˆ
 			{
 				break;
 			}
-			else//ÆäËüÔ­Òò£¬Á¬½ÓÊ§°Ü
+			else//å…¶å®ƒåŸå› ï¼Œè¿æ¥å¤±è´¥
 			{
 				return false;
 			}
 		}
 
-		if(reVal==0)//Á¬½Ó³É¹¦
+		if(reVal==0)//è¿æ¥æˆåŠŸ
 			break;
 	}
 
@@ -105,16 +105,16 @@ bool ConnectServer(void)
 
 
 
-//´´½¨·¢ËÍºÍ½ÓÊÕÊı¾İÏß³Ì
+//åˆ›å»ºå‘é€å’Œæ¥æ”¶æ•°æ®çº¿ç¨‹
 bool	CreateThread(void)
 {
-	//´´½¨½ÓÊÕÊı¾İµÄÏß³Ì
+	//åˆ›å»ºæ¥æ”¶æ•°æ®çš„çº¿ç¨‹
 	unsigned long ulThreadId;
 	RecvHandle=CreateThread(NULL, 0, RecvThread, NULL, 0, &ulThreadId);
 	if (RecvHandle==NULL)
 		return false;
 
-	//´´½¨·¢ËÍÊı¾İµÄÏß³Ì
+	//åˆ›å»ºå‘é€æ•°æ®çš„çº¿ç¨‹
 	SendHandle=CreateThread(NULL, 0, SendThread, NULL, 0, &ulThreadId);
 	if (SendHandle==NULL)
 		return false;
@@ -124,25 +124,25 @@ bool	CreateThread(void)
 
 
 
-//½ÓÊÕÊı¾İÏß³Ì
+//æ¥æ”¶æ•°æ®çº¿ç¨‹
 DWORD __stdcall	RecvThread(void* pParam)
 {
 	int		reVal;
-	//½ÓÊÕÊı¾İ»º³åÇø
+	//æ¥æ”¶æ•°æ®ç¼“å†²åŒº
 	char    bufRecv[BUF_SIZE];
-    //µ±´¦ÓÚÁ¬½Ó×´Ì¬
+    //å½“å¤„äºè¿æ¥çŠ¶æ€
 	while(bConnecting)
 	{
         memset(bufRecv, 0, BUF_SIZE);
-        //½ÓÊÕÊı¾İ
+        //æ¥æ”¶æ•°æ®
 		reVal=recv(sClient, bufRecv, BUF_SIZE, 0);
 		if (reVal==SOCKET_ERROR)
 		{
 			int nErrCode=WSAGetLastError();
-			//½ÓÊÜÊı¾İ»º³åÇø²»¿ÉÓÃ
+			//æ¥å—æ•°æ®ç¼“å†²åŒºä¸å¯ç”¨
 			if (nErrCode==WSAEWOULDBLOCK)
 			{
-			    //¼ÌĞø½ÓÊÕÊı¾İ
+			    //ç»§ç»­æ¥æ”¶æ•°æ®
 				continue;
 			}
 			else
@@ -151,7 +151,7 @@ DWORD __stdcall	RecvThread(void* pParam)
 				ShowMessage(ServerClose);
                 bConnecting = false;
                 toSend = false;
-                //Çå¿Õ½ÓÊÕ»º³åÇø
+                //æ¸…ç©ºæ¥æ”¶ç¼“å†²åŒº
                 memset(bufRecv, 0, BUF_SIZE);
                 Exit(1);
 				break;
@@ -159,8 +159,11 @@ DWORD __stdcall	RecvThread(void* pParam)
 		}
 		if(reVal > 0)
         {
-            //ÏÔÊ¾Êı¾İ
-            cout<<"·şÎñÆ÷ÏòÈ«Ìå·¢ËÍÏûÏ¢:"<<bufRecv<<endl;
+            //æ˜¾ç¤ºæ•°æ®
+            if(!strncmp(bufRecv, "IP:", 3))
+                cout<<bufRecv<<endl;
+            else
+                cout<<"æœåŠ¡å™¨å‘å…¨ä½“å‘é€æ¶ˆæ¯:"<<bufRecv<<endl;
         }
 	}
 	return 0;
@@ -168,32 +171,32 @@ DWORD __stdcall	RecvThread(void* pParam)
 
 
 
-//·¢ËÍÊı¾İÏß³Ì
+//å‘é€æ•°æ®çº¿ç¨‹
 DWORD __stdcall	SendThread(void* pParam)
 {
-    //µ±´¦ÓÚÁ¬½Ó×´Ì¬
+    //å½“å¤„äºè¿æ¥çŠ¶æ€
 	while(bConnecting)
 	{
-	    //Èç¹ûÓĞĞèÒª·¢ËÍµÄÊı¾İ
+	    //å¦‚æœæœ‰éœ€è¦å‘é€çš„æ•°æ®
 		if (toSend)
 		{
 			while(bConnecting)
             {
                 int val=send(sClient, bufSend, BUF_SIZE,0);
 
-                //´¦Àí·µ»Ø´íÎó
+                //å¤„ç†è¿”å›é”™è¯¯
                 if (val==SOCKET_ERROR)
                 {
                     int nErrCode=WSAGetLastError();
-                    if(nErrCode==WSAEWOULDBLOCK)		//·¢ËÍ»º³åÇø²»¿ÉÓÃ
+                    if(nErrCode==WSAEWOULDBLOCK)		//å‘é€ç¼“å†²åŒºä¸å¯ç”¨
                     {
-                        continue;						//¼ÌĞøÑ­»·
+                        continue;						//ç»§ç»­å¾ªç¯
                     }else
                     {
                         return 0;
                     }
                 }
-                //»º³åÇøÊı¾İ·¢ËÍÍê±Ï£¬·¢ËÍ×´Ì¬ÖÃÎªfalse
+                //ç¼“å†²åŒºæ•°æ®å‘é€å®Œæ¯•ï¼Œå‘é€çŠ¶æ€ç½®ä¸ºfalse
                 toSend = false;
                 break;
             }
@@ -204,14 +207,14 @@ DWORD __stdcall	SendThread(void* pParam)
 
 
 
-//ÊäÈëÊı¾İµ½Ğ´Èë»º³åÇø
+//è¾“å…¥æ•°æ®åˆ°å†™å…¥ç¼“å†²åŒº
 void WriteBuffer(void)
 {
-    char cInput[BUF_SIZE];	//ÓÃ»§ÊäÈë»º³åÇø
-    while(bConnecting)			//Á¬½Ó×´Ì¬
+    char cInput[BUF_SIZE];	//ç”¨æˆ·è¾“å…¥ç¼“å†²åŒº
+    while(bConnecting)			//è¿æ¥çŠ¶æ€
 	{
 		memset(cInput, 0, BUF_SIZE);
-		cin.getline(cInput,BUF_SIZE);			        //ÊäÈë±í´ïÊ½
+		cin.getline(cInput,BUF_SIZE);			        //è¾“å…¥è¡¨è¾¾å¼
 		memcpy(bufSend, cInput, BUF_SIZE);
 		toSend = true;
 	}
@@ -219,29 +222,29 @@ void WriteBuffer(void)
 
 
 
-//´òÓ¡ĞÅÏ¢
+//æ‰“å°ä¿¡æ¯
 void ShowMessage(int stateCode)
 {
 	switch(stateCode)
 	{
     case InitSocketFail:
-        cout<<"³õÊ¼»¯Ì×½Ó×ÖÊ§°Ü£¡"<<endl;
-		cout<<"3ÃëÖÓºóÍË³ö¿Í»§¶Ë..."<<endl;
+        cout<<"åˆå§‹åŒ–å¥—æ¥å­—å¤±è´¥ï¼"<<endl;
+		cout<<"3ç§’é’Ÿåé€€å‡ºå®¢æˆ·ç«¯..."<<endl;
 		break;
     case ConnectServerFail:
-        cout<<"Á¬½Ó·şÎñÆ÷Ê§°Ü£¡"<<endl;
-		cout<<"3ÃëÖÓºóÍË³ö¿Í»§¶Ë..."<<endl;
+        cout<<"è¿æ¥æœåŠ¡å™¨å¤±è´¥ï¼"<<endl;
+		cout<<"3ç§’é’Ÿåé€€å‡ºå®¢æˆ·ç«¯..."<<endl;
 		break;
     case ConnectServerSuccess:
-        cout<<"³É¹¦Á¬½ÓÖÁ·şÎñÆ÷£¡"<<endl;
+        cout<<"æˆåŠŸè¿æ¥è‡³æœåŠ¡å™¨ï¼"<<endl;
         break;
     case CreateThreadFail:
-        cout<<"ÊÕ·¢Êı¾İÏß³Ì´´½¨Ê§°Ü£¡"<<endl;
-        cout<<"3ÃëÖÓºóÍË³ö¿Í»§¶Ë..."<<endl;
+        cout<<"æ”¶å‘æ•°æ®çº¿ç¨‹åˆ›å»ºå¤±è´¥ï¼"<<endl;
+        cout<<"3ç§’é’Ÿåé€€å‡ºå®¢æˆ·ç«¯..."<<endl;
         break;
     case ServerClose:
-        cout<<"¼ì²âµ½·şÎñÆ÷ÒÑ¹Ø±Õ"<<endl;
-        cout<<"°´»Ø³µÍË³ö¿Í»§¶Ë..."<<endl;
+        cout<<"æ£€æµ‹åˆ°æœåŠ¡å™¨å·²å…³é—­"<<endl;
+        cout<<"æŒ‰å›è½¦é€€å‡ºå®¢æˆ·ç«¯..."<<endl;
         break;
     default:
         cout<<"...."<<endl;
@@ -250,7 +253,7 @@ void ShowMessage(int stateCode)
 
 
 
-//¿Í»§¶ËÍË³ö
+//å®¢æˆ·ç«¯é€€å‡º
 void Exit(int exittime)
 {
     CloseHandle(RecvHandle);
