@@ -12,4 +12,4 @@ Client/Server模型，使用tcp协议
 
 实现客户端消息群发功能
  
-更新中：I/O多路复用模型 Linux下epoll机制的demo
+更新中：I/O多路复用模型——Linux下epoll高并发机制的demo
