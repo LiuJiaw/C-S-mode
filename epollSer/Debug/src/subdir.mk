@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/Main.cpp \
 ../src/epoll.cpp 
 
 OBJS += \
+./src/Main.o \
 ./src/epoll.o 
 
 CPP_DEPS += \
+./src/Main.d \
 ./src/epoll.d 
 
 
