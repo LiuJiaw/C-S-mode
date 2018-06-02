@@ -8,6 +8,16 @@
 #ifndef GLOBAL_H_
 #define GLOBAL_H_
 
+#include <iostream>
+#include <sys/socket.h>
+#include <sys/epoll.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <string.h>
+#include <vector>
+#include <string.h>
+
 //服务器TCP的IP地址
 #define SERVERIP "127.0.0.1"
 //服务器TCP端口
@@ -23,10 +33,18 @@
 //缓冲区的规格
 #define BUF_SIZE 1024
 
+using namespace std;
+
 //监听套接字
-int epSer;
+extern int epSer;
 //epoll专用的描述符
-int epFd;
+extern int epFd;
+//记录已连接客户端套接字的容器
+extern vector<int> clisockets;
+//发送缓冲区
+extern char sendBuf[BUF_SIZE];
+//接收缓冲区
+extern char recvBuf[BUF_SIZE];
 
 
 //初始化全局变量
@@ -35,9 +53,17 @@ void InitGlobal();
 bool InitSocket();
 //
 bool StartEpoll();
-//
-void Epoll();
 //退出服务器
 void EXIT();
+//
+void Epoll();
+//接受服务器连接
+void AcceptConn();
+//获取连接客户端的消息,返回值为所得信息的长度，参数为客户端套接字
+int GetMessage(int);
+//向客户端广播消息
+void Boardcast(int);
+//删除客户端连接
+void RemoveConn(int);
 
 #endif /* GLOBAL_H_ */
