@@ -46,7 +46,6 @@ extern char sendBuf[BUF_SIZE];
 //接收缓冲区
 extern char recvBuf[BUF_SIZE];
 
-
 //初始化全局变量
 void InitGlobal();
 //初始化套接字
@@ -54,7 +53,7 @@ bool InitSocket();
 //
 bool StartEpoll();
 //退出服务器
-void EXIT();
+void Exit();
 //
 void Epoll();
 //接受服务器连接
