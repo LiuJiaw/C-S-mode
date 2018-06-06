@@ -1,3 +1,3 @@
-src/epoll.o: ../src/epoll.cpp ../src/global.h
+src/epoll.o: ../src/epoll.cpp ../src/epoll.h
 
-../src/global.h:
+../src/epoll.h:

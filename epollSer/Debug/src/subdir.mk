@@ -7,6 +7,10 @@ CPP_SRCS += \
 ../src/Main.cpp \
 ../src/epoll.cpp 
 
+O_SRCS += \
+../src/Main.o \
+../src/epoll.o 
+
 OBJS += \
 ./src/Main.o \
 ./src/epoll.o 

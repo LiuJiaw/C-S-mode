@@ -1,3 +1,3 @@
-src/Main.o: ../src/Main.cpp ../src/global.h
+src/Main.o: ../src/Main.cpp ../src/epoll.h
 
-../src/global.h:
+../src/epoll.h:
