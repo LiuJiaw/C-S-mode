@@ -10,6 +10,8 @@ Client/Server模型，使用tcp协议
 
 使用时，需将TcpCli.h与TcpSer.h中的服务器IP地址，改为服务器端主机的公网IP地址；此外需保证端口一致。
 
+
 实现客户端消息群发功能
  
-更新中：I/O多路复用模型——Linux下epoll高并发机制的demo
+ 
+已更新：epoll+多进程，使服务器端具备更强的并发性能
