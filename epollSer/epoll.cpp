@@ -25,6 +25,10 @@ bool InitSocket() {
 	if (INVALID_SOCKET == epSer) {
 		return false;
 	}
+
+	int option=1;
+	setsockopt(epSer,SOL_SOCKET,SO_REUSEADDR,(void*)&option,sizeof(option));
+
 	//设置服务器监听套接字地址
 	struct sockaddr_in seraddr;
 	seraddr.sin_family = AF_INET;
@@ -40,7 +44,9 @@ bool InitSocket() {
 	if (SOCKET_ERROR == reVal) {
 		return false;
 	}
-	cout << "套接字初始化完成" << endl;
+	cout << "套接字初始化完成！" << endl;
+	cout << "服务器ip地址与端口:" << SERVERIP << ":" << SERVERPORT << endl;
+	cout << "监听套接字为: " << epSer <<endl;
 	return true;
 }
 
@@ -87,12 +93,13 @@ bool StartEpoll() {
 				//从触发事件的套接字中读取数据，写入到recvBuf
 				int msglen = GetMessage(Ev[i].data.fd);
 				//发来的字节长度为0，说明这是客户端断开连接时发送的
-				if (0 == msglen) {
+				if (0 >= msglen) {
 					RemoveConn(Ev[i].data.fd, epFd);
 				}
 				else{
 					getinfotask* tsk = new getinfotask;
 					tsk->setrecvstr(recvBuf, msglen);
+					tsk->setsockfd(Ev[i].data.fd);
 					tp.addtask(tsk);
 				}
 			}
@@ -124,7 +131,7 @@ void AcceptConn(int epFd) {
 	//将与客户端建立连接的套接字，加入到epoll监听队列中
 	epoll_ctl(epFd, EPOLL_CTL_ADD, clisocket, &clievent);
 
-	cout << "客户端:" << clisocket << "  已连接" << endl;
+	cout << "客户端:" << inet_ntoa(cliaddr.sin_addr) << ":" << cliaddr.sin_port <<"  套接字号"<<clisocket<< "  已连接" << endl;
 	//加入到记录已连接套接字的容器中
 	clisockets.push_back(clisocket);
 }
@@ -132,10 +139,10 @@ void AcceptConn(int epFd) {
 int GetMessage(int clifd) {
 	memset(recvBuf, 0, BUF_SIZE);
 	int msglen = recv(clifd, recvBuf, BUF_SIZE, 0);
-	if (0 == msglen) {
+	if (0 >= msglen) {
 		return 0;
 	}
-	cout << "进程号:"<< getpid() << "\t客户端:" << clifd << "  发来数据:" << recvBuf << endl;
+	cout << "进程号:"<< getpid() << "\t客户端套接字号:" << clifd << "  发来对话请求:" << recvBuf << endl;
 	return msglen;
 }
 
@@ -148,7 +155,7 @@ void Boardcast() {
 }
 
 void RemoveConn(int clifd, int epFd) {
-	cout << "客户端:" << clifd << "  已断开连接" << endl;
+	cout << "套接字号为:" << clifd << "  的客户端已断开连接" << endl;
 	epoll_ctl(epFd, EPOLL_CTL_DEL, clifd, NULL);
 	vector<int>::iterator item;
 	//遍历容器，找出已断开连接的客户端，将之从epoll监听队列中删除
@@ -158,6 +165,7 @@ void RemoveConn(int clifd, int epFd) {
 			break;
 		}
 	}
+	close(clifd);
 }
 
 void Exit() {

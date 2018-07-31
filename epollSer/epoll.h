@@ -24,7 +24,7 @@
 //服务器TCP的IP地址
 #define SERVERIP "127.0.0.1"
 //服务器TCP端口
-#define SERVERPORT 6888
+#define SERVERPORT 8888
 //连接客户端数量
 #define CONN_NUM 10
 //设置epoll容量

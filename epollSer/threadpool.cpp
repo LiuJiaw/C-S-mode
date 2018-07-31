@@ -21,7 +21,6 @@ threadpool::threadpool(int threadnum){
 }
 
 void* threadpool::threadfunc(void* threaddata){
-	cout<<"线程创建成功"<<endl;
 	pthread_t self_id = pthread_self();
 	while(true){
 		pthread_mutex_lock(&m_mutex);
@@ -50,6 +49,7 @@ int threadpool::create(){
 	for(int i=0; i<m_threadnum; i++){
 		pthread_create(m_pthread_id+i, NULL, threadfunc, NULL);
 	}
+	cout<<"线程池创建完成"<<endl;
 	return 0;
 }
 
